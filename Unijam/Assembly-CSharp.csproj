@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\FusionManager.cs" />
     <Compile Include="Assets\Scripts\Flottement.cs" />
     <Compile Include="Assets\Scripts\Molecule.cs" />
+    <Compile Include="Assets\Scripts\FeuEteint.cs" />
     <Compile Include="Assets\Scenes\Script\AtomeScript.cs" />
   </ItemGroup>
   <ItemGroup>
