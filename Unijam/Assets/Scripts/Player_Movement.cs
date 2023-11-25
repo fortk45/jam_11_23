@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class Player_Movement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        canJump = true;
+        maxHeigt = 1f;
     }
 
     // Update is called once per frame
@@ -28,11 +31,15 @@ public class Player_Movement : MonoBehaviour
         {
             transform.Translate(Vector3.right * speed * Time.deltaTime);
         }
-        if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+        if((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && canJump)
         {
             jump();
         }
-        if(rb.position.y > maxHeigt)
+        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
+        {
+            canJump = false;
+        }
+        if (rb.position.y >= maxHeigt)
         {
             stopJump();
         }
@@ -42,29 +49,23 @@ public class Player_Movement : MonoBehaviour
     {
         if (!col.gameObject.CompareTag("Plateform")) return;
         canJump = true;
-        maxHeigt = rb.position.y + 3f;
+        maxHeigt = rb.position.y + 1f;
     }
 
     void jump()
     {
-        if(canJump)
+        if (canJump)
         {
-            rb.AddForce(Vector3.up * jumpForce);
-        }
-        else
-        {
-            stopJump();
+            Vector3 jumpVector = Vector3.up * jumpForce * 0.1f;
+            rb.AddForce(jumpVector, ForceMode.Impulse);
         }
     }
 
     void stopJump()
     {
-        if(canJump == false)
-        {}
-        else
-        {
-            canJump = false;
-            rb.velocity = Vector3.zero;
-        }
+        canJump = false;
+        Vector3 jumpVector = Vector3.down * jumpForce * 0.05f;
+        rb.AddForce(jumpVector, ForceMode.Impulse);
     }
 }
+ 
