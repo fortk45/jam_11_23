@@ -11,31 +11,43 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] public float maxHeigt;
     [SerializeField] private bool canJump;
     private Rigidbody rb;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Animator armAnimator;
+    [SerializeField] SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         canJump = true;
-        maxHeigt = 1f;
+        maxHeigt = 0.75f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        animator.SetBool("IsMoving", false);
         transform.rotation = new Quaternion(0f,0f,0f,0f);
-        if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        if(Input.GetKey(KeyCode.A))
         {
             transform.Translate(Vector3.left * speed * Time.deltaTime);
+            animator.SetFloat("MoveX", -0.5f);
+            armAnimator.SetFloat("MoveX", -0.5f);
+            animator.SetBool("IsMoving", true);
+            spriteRenderer.sortingOrder = 2;
         }
-        if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        if(Input.GetKey(KeyCode.D))
         {
             transform.Translate(Vector3.right * speed * Time.deltaTime);
+            animator.SetFloat("MoveX", 0.5f);
+            armAnimator.SetFloat("MoveX", 0.5f);
+            animator.SetBool("IsMoving", true);
+            spriteRenderer.sortingOrder = 0;
         }
-        if((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) && canJump)
+        if((Input.GetKey(KeyCode.W)) && canJump)
         {
             jump();
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W))
+        if (Input.GetKeyUp(KeyCode.W))
         {
             canJump = false;
         }
@@ -49,7 +61,7 @@ public class Player_Movement : MonoBehaviour
     {
         if (!col.gameObject.CompareTag("Plateform")) return;
         canJump = true;
-        maxHeigt = rb.position.y + 1f;
+        maxHeigt = rb.position.y + 0.75f;
     }
 
     void jump()
