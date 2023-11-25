@@ -5,27 +5,64 @@ using UnityEngine;
 public class FusionAtomes : MonoBehaviour
 {
     public float vitesseRelativeMinimale = 5f; // Ajustez la vitesse minimale pour la collision
-    public GameObject ohPrefab; // Définissez le préfabriqué de la nouvelle boule OH dans l'éditeur Unity
+
+
+    [SerializeField]
+    private Molecule[] tableauPrefabs;
+
+    void Start()
+    {
+    }
 
     void OnCollisionEnter(Collision collision)
     {
-        // Vérifier si la collision a suffisamment de vitesse relative
-        if (collision.relativeVelocity.magnitude > vitesseRelativeMinimale)
+        return;
+        for (int i = 0; i < tableauPrefabs.Length; i++)
         {
-            // Créer un nouvel objet OH à la position de la collision
-            GameObject ohObject = Instantiate(ohPrefab, collision.contacts[0].point, Quaternion.identity);
+            Molecule parent1 = gameObject.GetComponent<Molecule>();
+            Molecule parent2 = collision.gameObject.GetComponent<Molecule>();
+            if (parent1.moleculeType == tableauPrefabs[i].returnParent1().moleculeType)
+            {
+                if (parent2.moleculeType == tableauPrefabs[i].GetComponent<Molecule>().returnParent2().moleculeType)
+                {
+                    // Créer un nouvel objet à la position de la collision
+                    GameObject ohObject = Instantiate(tableauPrefabs[i].gameObject, collision.contacts[0].point, Quaternion.identity);
 
-            // Renommer la nouvelle boule OH
-            ohObject.name = "OH";
+                    // Renommer la nouvelle boule
+                    ohObject.name = tableauPrefabs[i].name;
 
-            // Détruire les boules en collision
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
+                    // Détruire les boules en collision
+                    Destroy(collision.gameObject);
+                    Destroy(gameObject);
+                    return;
+                }
 
-            Debug.Log("Nouvelle boule OH créée avec succès!");
+            }
+
+            if (parent1.moleculeType == tableauPrefabs[i].GetComponent<Molecule>().returnParent2().moleculeType)
+            {
+                if (parent2.moleculeType == tableauPrefabs[i].GetComponent<Molecule>().returnParent1().moleculeType)
+                {
+                    // Créer un nouvel objet à la position de la collision
+                    GameObject ohObject = Instantiate(tableauPrefabs[i].gameObject, collision.contacts[0].point, Quaternion.identity);
+
+                    // Renommer la nouvelle boule
+                    ohObject.name = tableauPrefabs[i].name;
+
+                    // Détruire les boules en collision
+                    Destroy(collision.gameObject);
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+            return;
         }
+
+
+
     }
 }
+
 
 
 
