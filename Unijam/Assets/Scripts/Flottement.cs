@@ -7,7 +7,7 @@ public class FlottementSpheriqueScript : MonoBehaviour
     public float forceRappel = 5f;
     public float forceGravite = 9.8f;
     public float forceFlottante = 1f;
-    public float intervalleChangementDirection = 2f; // Intervalle de changement de direction
+    public float intervalleChangementDirection = 2f;
 
     private Vector3 positionOriginale;
     private Vector3 directionAleatoire;
@@ -23,7 +23,7 @@ public class FlottementSpheriqueScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Calcul de la force de rappel
+
         Vector3 directionRappel = positionOriginale - transform.position;
         GetComponent<Rigidbody>().AddForce(directionRappel * forceRappel);
 
