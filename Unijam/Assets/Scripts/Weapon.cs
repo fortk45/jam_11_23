@@ -27,7 +27,6 @@ public class Weapon : MonoBehaviour
     }
     private void changerotation(int n)
     {
-        Debug.Log("test");
         if (n == -2)
         {
             transform.rotation = new Quaternion(0, 0, -0.7071068f, 0.7071068f);
